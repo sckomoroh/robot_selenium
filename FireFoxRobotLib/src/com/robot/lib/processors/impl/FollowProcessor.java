@@ -2,9 +2,13 @@ package com.robot.lib.processors.impl;
 
 import com.robot.lib.processors.BaseProcessor;
 import com.robot.lib.processors.ProcessorState;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
 
 public class FollowProcessor extends BaseProcessor {
+    private static final Logger logger = LogManager.getLogger();
+
     private String activityUrl;
 
     public FollowProcessor(WebDriver webDriver) {
@@ -20,14 +24,20 @@ public class FollowProcessor extends BaseProcessor {
     protected void processorAction() {
         fireProcessorStateChanged(ProcessorState.Started, "Follow started");
         fireProcessorMessage("Check is followed");
+
         if (isFollowing()) {
+            logger.debug("Already followed, skip it");
             fireProcessorStateChanged(ProcessorState.Skipped, "Already follow");
             return;
         }
 
+        logger.info("Try to follow");
+
         fireProcessorMessage("Do follow");
 
         doFollow();
+
+        logger.info("Following completed");
 
         fireProcessorStateChanged(ProcessorState.Completed, "Follow completed");
     }

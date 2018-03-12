@@ -11,28 +11,28 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Libs/selenium-java-3.10.0/client-combined-3.10.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../dependencies/log4j-core-2.10.0.jar!/" />
         </CLASSES>
         <JAVADOC />
-        <SOURCES>
-          <root url="jar://C:/Libs/selenium-java-3.10.0/client-combined-3.10.0-sources.jar!/" />
-        </SOURCES>
+        <SOURCES />
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Libs/apache-log4j-2.10.0-bin/log4j-api-2.10.0.jar!/" />
-          <root url="jar://C:/Libs/apache-log4j-2.10.0-bin/log4j-core-2.10.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../dependencies/log4j-api-2.10.0.jar!/" />
         </CLASSES>
-        <JAVADOC>
-          <root url="jar://C:/Libs/apache-log4j-2.10.0-bin/log4j-api-2.10.0-javadoc.jar!/" />
-          <root url="jar://C:/Libs/apache-log4j-2.10.0-bin/log4j-core-2.10.0-javadoc.jar!/" />
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://C:/Libs/apache-log4j-2.10.0-bin/log4j-api-2.10.0-sources.jar!/" />
-          <root url="jar://C:/Libs/apache-log4j-2.10.0-bin/log4j-core-2.10.0-sources.jar!/" />
-        </SOURCES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../dependencies/client-combined-3.10.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
       </library>
     </orderEntry>
   </component>
