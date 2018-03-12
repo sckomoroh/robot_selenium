@@ -31,8 +31,7 @@ public abstract class BaseProcessor implements RobotProcessor {
         return null;
     }
 
-    public void setProcessorData(Object data)
-    {
+    public void setProcessorData(Object data) {
     }
 
     public ProcessorState getState() {
@@ -40,8 +39,6 @@ public abstract class BaseProcessor implements RobotProcessor {
     }
 
     public void addListener(ProcessorListener listener) {
-        logger.debug(String.format("Add new listener to the processor '%s'", getDisplayName()));
-
         if (!processorListeners.contains(listener)) {
             processorListeners.add(listener);
         } else {
@@ -50,23 +47,26 @@ public abstract class BaseProcessor implements RobotProcessor {
     }
 
     public void removeListener(ProcessorListener listener) {
-        logger.debug(String.format("Remove listener to the processor '%s'", getDisplayName()));
-
         processorListeners.remove(listener);
     }
 
     public void start() {
-        logger.info(String.format("Starting processor '%s'", getDisplayName()));
+        try {
+            logger.info(String.format("Starting processor '%s'", getDisplayName()));
 
-        logger.debug("Wait until page completed");
+            logger.debug("Wait until page completed");
 
-        fireProcessorMessage("Wait for page complete");
+            fireProcessorMessage("Wait for page complete");
 
-        webDriverHelper.waitPageCompleted();
+            webDriverHelper.waitPageCompleted();
 
-        logger.debug("Start processor action");
+            logger.debug("Start processor action");
 
-        processorAction();
+            processorAction();
+        } catch (Exception ex) {
+            fireProcessorStateChanged(ProcessorState.Failed, ex.getMessage());
+            logger.error(String.format("Processor '%' failed", getDisplayName()), ex);
+        }
     }
 
     protected abstract void processorAction();
