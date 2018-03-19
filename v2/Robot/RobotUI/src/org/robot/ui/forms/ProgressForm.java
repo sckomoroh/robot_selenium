@@ -302,11 +302,11 @@ public class ProgressForm {
 
             createWebDriverTask.removeListener(commonTaskListener);
 
-            webDriver = createWebDriverTask.getTaskData();
-
             if (createWebDriverTask.getTaskState() == TaskState.Failed) {
                 throw createWebDriverTask.getTaskException();
             }
+
+            webDriver = createWebDriverTask.getTaskData();
         }
 
         private String getDriverLocation() {
@@ -328,7 +328,7 @@ public class ProgressForm {
             return String.format(fileTemplate, ProgressForm.this.applicationLocation, driverFileName);
         }
 
-        private void login() {
+        private void login() throws Exception {
             String userName = config.getStringValue(Configuration.UsernameName);
             String password = config.getStringValue(Configuration.PasswordName);
 
@@ -345,10 +345,14 @@ public class ProgressForm {
 
             loginTask.removeListener(commonTaskListener);
 
+            if (loginTask.getTaskState() == TaskState.Failed) {
+                throw loginTask.getTaskException();
+            }
+
             userWebreference = loginTask.getTaskData();
         }
 
-        private void collectActivities() {
+        private void collectActivities() throws Exception {
             ActivitiesTask activitiesTask = new ActivitiesTask(webDriver);
 
             activitiesTask.addListener(commonTaskListener);
@@ -356,6 +360,10 @@ public class ProgressForm {
             activitiesTask.run();
 
             activitiesTask.removeListener(commonTaskListener);
+
+            if (activitiesTask.getTaskState() == TaskState.Failed) {
+                throw activitiesTask.getTaskException();
+            }
 
             activities = activitiesTask.getTaskData();
 

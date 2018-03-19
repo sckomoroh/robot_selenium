@@ -9,6 +9,10 @@ public interface WebDriver {
 
     WebElement getElementById(String elementId);
 
+    List<WebElement> getElementsByClassName(String className, int timeout, int retryCount);
+
+    WebElement getElementById(String elementId, int timeout, int retryCount);
+
     void waitPageLoadCompleted();
 
     void quit();

@@ -47,9 +47,9 @@ public class LoginTask extends WebDriverTaskBase<InputLoginTaskData, String> {
 
         logger.debug("Get web element for submit");
 
-        WebElement submitElement = webDriver.getElementById("sign_in");
-        WebElement usernameElement = webDriver.getElementById("adobeid_username");
-        WebElement passwordElement = webDriver.getElementById("adobeid_password");
+        WebElement submitElement = webDriver.getElementById("sign_in", 500, 5);
+        WebElement usernameElement = webDriver.getElementById("adobeid_username", 500, 5);
+        WebElement passwordElement = webDriver.getElementById("adobeid_password", 500, 5);
 
         logger.debug(String.format("Set credential values. Username: '%s', Password: '%s'", inputData.username, inputData.password));
 
@@ -68,7 +68,7 @@ public class LoginTask extends WebDriverTaskBase<InputLoginTaskData, String> {
     private void findUserWebReference() {
         setPhase("Find user WEB reference");
 
-        List<WebElement> targetElements = webDriver.getElementsByClassName("qa-nav-link-image");
+        List<WebElement> targetElements = webDriver.getElementsByClassName("qa-nav-link-image", 500, 5);
         logger.debug(String.format("Found '%d' element", targetElements.size()));
 
         WebElement targetElement = targetElements.iterator().next();

@@ -49,6 +49,38 @@ class WebDriverImpl implements WebDriver {
     }
 
     @Override
+    public List<WebElement> getElementsByClassName(String className, int timeout, int retryCount) {
+        List<WebElement> resultElements = new ArrayList<>();
+
+        String javascriptBody = String.format("return document.getElementsByClassName('%s');", className);
+        List<org.openqa.selenium.WebElement> webElements = (List<org.openqa.selenium.WebElement>)javascriptExecutor.executeScript(javascriptBody);
+
+        while (retryCount-- > 0 && webElements.size() < 1) {
+            sleep(timeout);
+            webElements = (List<org.openqa.selenium.WebElement>)javascriptExecutor.executeScript(javascriptBody);
+        }
+
+        for (org.openqa.selenium.WebElement webElement : webElements) {
+            resultElements.add(new WebElementImpl(webDriver, webElement, javascriptExecutor, webDriverWait));
+        }
+
+        return resultElements;
+    }
+
+    @Override
+    public WebElement getElementById(String elementId, int timeout, int retryCount) {
+        String javascriptBody = String.format("return document.getElementById('%s');", elementId);
+        org.openqa.selenium.WebElement webElement = (org.openqa.selenium.WebElement)javascriptExecutor.executeScript(javascriptBody);
+
+        while (retryCount-- > 0 && webElement == null) {
+            sleep(timeout);
+            webElement = (org.openqa.selenium.WebElement)javascriptExecutor.executeScript(javascriptBody);
+        }
+
+        return new WebElementImpl(webDriver, webElement, javascriptExecutor, webDriverWait);
+    }
+
+    @Override
     public void waitPageLoadCompleted() {
         webDriverWait.until(new PageCompletedWaitCondition(javascriptExecutor));
     }
@@ -60,5 +92,12 @@ class WebDriverImpl implements WebDriver {
 
     public Object executeJavaScript(String scriptBody) {
         return javascriptExecutor.executeScript(scriptBody);
+    }
+
+    private static void sleep(long milliseconds) {
+        try {
+            Thread.sleep(milliseconds);
+        } catch (Exception ex) {
+        }
     }
 }
