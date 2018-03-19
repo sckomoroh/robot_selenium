@@ -1,6 +1,9 @@
 package com.webdriver.wrapper;
 
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class WebElementImpl implements WebElement {
@@ -34,5 +37,10 @@ public class WebElementImpl implements WebElement {
     @Override
     public void setElementValue(String value) {
         javascriptExecutor.executeScript("arguments[0].value = arguments[1]; return true;", webElement, value);
+    }
+
+    @Override
+    public boolean isVisible() {
+        return webElement.isDisplayed();
     }
 }

@@ -32,7 +32,36 @@ public class AppreciateTask extends WebDriverTaskBase {
         return true;
     }
 
+    private boolean isAppreciateCompleted() {
+        setPhase("Wait for the appreciation");
+
+        logger.debug("Wait for the appreciation");
+
+        boolean isAppreciate = false;
+        int retryCount = 0;
+
+        do {
+            List<WebElement> targetElements = webDriver.getElementsByClassName("appreciation-button js-appreciate js-adobe-analytics can-unappreciate thanks");
+
+            //logger.debug(String.format("Found %d that indicated to appreciating", targetElements.size()));
+
+            isAppreciate = targetElements.size() > 0;
+            if (isAppreciate == false) {
+                try {
+                    Thread.sleep(500);
+                } catch (Exception ex) {
+                }
+            }
+        }
+        while (retryCount++ < 5 && isAppreciate == false);
+
+        logger.debug(String.format("Appreciation wait result: %s", isAppreciate ? "true" : "false"));
+
+        return isAppreciate;
+    }
+
     private boolean isAppreciated() {
+        // rf-appreciation--date
         setPhase("Check for the appreciation");
 
         logger.debug("Check for the appreciation");
@@ -41,11 +70,18 @@ public class AppreciateTask extends WebDriverTaskBase {
         int retryCount = 0;
 
         do {
-            List<WebElement> targetElements = webDriver.getElementsByClassName("appreciation-button js-appreciate js-adobe-analytics can-unappreciate thanks");
+            List<WebElement> targetElements = webDriver.getElementsByClassName("rf-appreciation--date");
 
-            logger.debug(String.format("Found %d that indicated to appreciating", targetElements.size()));
+            //logger.debug(String.format("Found %d that indicated to appreciating", targetElements.size()));
 
-            isAppreciate = targetElements.size() > 0;
+            isAppreciate = false;
+            for (WebElement webElement : targetElements) {
+                if (webElement.isVisible()) {
+                    isAppreciate = true;
+                    break;
+                }
+            }
+
             if (isAppreciate == false) {
                 try {
                     Thread.sleep(1000);
@@ -54,6 +90,8 @@ public class AppreciateTask extends WebDriverTaskBase {
             }
         }
         while (retryCount++ < 5 && isAppreciate == false);
+
+        logger.debug(String.format("Appreciation check result: %s", isAppreciate ? "true" : "false"));
 
         return isAppreciate;
     }
@@ -77,7 +115,7 @@ public class AppreciateTask extends WebDriverTaskBase {
 
         logger.debug("Wait for appreciation");
 
-        while (!isAppreciated()) { }
+        while (!isAppreciateCompleted()) { }
 
         logger.info("Appreciate completed");
     }

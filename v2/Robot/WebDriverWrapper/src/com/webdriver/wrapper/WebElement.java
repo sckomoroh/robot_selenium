@@ -8,4 +8,6 @@ public interface WebElement {
     String getText();
 
     void setElementValue(String value);
+
+    boolean isVisible();
 }
