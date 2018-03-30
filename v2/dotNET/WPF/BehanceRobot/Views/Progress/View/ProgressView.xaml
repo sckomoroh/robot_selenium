@@ -1,0 +1,130 @@
+﻿<UserControl x:Class="BehanceRobot.Views.Progress.View.ProgressView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BehanceRobot.Views.Progress.View"
+             xmlns:viewModel="clr-namespace:BehanceRobot.Views.Progress.ViewModel"
+             xmlns:items="clr-namespace:BehanceRobot.Views.Progress.ViewModel.Items"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="500">
+    <UserControl.DataContext>
+        <viewModel:ProgressViewModel />
+    </UserControl.DataContext>
+    
+    <UserControl.Resources>
+        <items:ItemFontConverter x:Key="ItemFontConverter" />
+        <items:ItemFontStyleConverter x:Key="ItemFontStyleConverter" />
+        <items:ItemColorConverter x:Key="ItemColorConverter" />
+    </UserControl.Resources>
+    
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0,0,0,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <CheckBox Grid.Column="0" Content="Follow" Margin="0,0,5,0" VerticalAlignment="Center" IsChecked="{Binding DoFollow}"/>
+            <CheckBox Grid.Column="1" Content="Appreciate" Margin="0,0,5,0" VerticalAlignment="Center" IsChecked="{Binding DoAppreciate}"/>
+            <CheckBox Grid.Column="2" Content="Comment" Margin="0,0,5,0" VerticalAlignment="Center" IsChecked="{Binding DoComment}"/>
+
+            <ComboBox Grid.Column="3" Margin="0,0,5,0" ItemsSource="{Binding WebDriverTypes}" SelectedValue="{Binding SelectedWebDriver}"/>
+            <Button Grid.Column="4" Content="Start" Padding="10,0" Command="{Binding StartCommand}"/>
+        </Grid>
+              
+        <TextBlock Grid.Row="1" Text="{Binding CurrentPhase}" />
+        
+        <ProgressBar Grid.Row="2" Margin="0,5" Height="8" Minimum="0" Maximum="{Binding ProgressMaximum}" Value="{Binding ProgressValue}" IsIndeterminate="{Binding IsProgressIndeterminate}"/>
+
+        <ListView Grid.Row="3" ItemsSource="{Binding ProgressItems}">
+            <ListView.View>
+                <GridView>
+                    <GridView.Columns>
+                        <GridViewColumn Header="Name">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="../../../Images/play.png" Width="16" Height="16" Margin="0,0,5,0" VerticalAlignment="Center">
+                                            <Image.Style>
+                                                <Style TargetType="{x:Type Image}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding HasRunning}" Value="True">
+                                                            <Setter Property="Visibility" Value="Visible" />
+                                                        </DataTrigger>
+
+                                                        <DataTrigger Binding="{Binding HasRunning}" Value="False">
+                                                            <Setter Property="Visibility" Value="Collapsed" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Image.Style>
+                                        </Image>
+
+                                        <TextBlock Text="{Binding Name, Mode=OneWay}">
+                                            <TextBlock.Style>
+                                                <Style TargetType="{x:Type TextBlock}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding HasRunning}" Value="True">
+                                                            <Setter Property="FontWeight" Value="Bold" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Follow">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                        <TextBlock 
+                                            Text="{Binding FollowTaskState, Mode=OneWay}" 
+                                            Foreground="{Binding Path=FollowTaskState, Converter={StaticResource ItemColorConverter}}"
+                                            FontWeight="{Binding Path=FollowTaskState, Converter={StaticResource ItemFontConverter}}"
+                                            FontStyle="{Binding Path=FollowTaskState, Converter={StaticResource ItemFontStyleConverter}}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Comment">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock 
+                                        Text="{Binding CommentTaskState, Mode=OneWay}" 
+                                        Foreground="{Binding Path=CommentTaskState, Converter={StaticResource ItemColorConverter}}"
+                                        FontStyle="{Binding Path=CommentTaskState, Converter={StaticResource ItemFontStyleConverter}}"
+                                        FontWeight="{Binding Path=CommentTaskState, Converter={StaticResource ItemFontConverter}}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Appreciate">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock 
+                                        Text="{Binding AppreciateTaskState, Mode=OneWay}" 
+                                        Foreground="{Binding Path=AppreciateTaskState, Converter={StaticResource ItemColorConverter}}"
+                                        FontStyle="{Binding Path=AppreciateTaskState, Converter={StaticResource ItemFontStyleConverter}}"
+                                        FontWeight="{Binding Path=AppreciateTaskState, Converter={StaticResource ItemFontConverter}}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView.Columns>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</UserControl>

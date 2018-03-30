@@ -1,0 +1,22 @@
+﻿<Window x:Class="BehanceRobot.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BehanceRobot"
+        xmlns:view="clr-namespace:BehanceRobot.Views.Settings.View"
+        xmlns:view1="clr-namespace:BehanceRobot.Views.Progress.View"
+        mc:Ignorable="d"
+        Title="Robot" Height="350" Width="525">
+    <Grid>
+        <TabControl Margin="5">
+            <TabItem Header="Progress" Padding="20,5">
+                <view1:ProgressView />
+            </TabItem>
+            
+            <TabItem Header="Settings" Padding="20,5">
+                <view:SettingsView />
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
